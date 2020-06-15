@@ -10,7 +10,7 @@ for an arbitrary list of strings.
 
 # Your name here, and any other people/sources who helped.
 # Give credit where credit is due.
-__author__ = "???"
+__author__ = "Amanda Yonce"
 
 import sys
 
@@ -20,18 +20,18 @@ def alphabetize(string):
     return "".join(sorted(string.lower()))
 
 
-def find_anagrams(words):
+def find_anagrams(word_file):
     """
     Returns a dictionary with keys that are alphabetized words and values
     that are all words that, when alphabetized, match the key.
     Example:
     {'dgo': ['dog'], 'act': ['cat', 'act']}
     """
-    anagrams = {
-        alphabetize(word): [
-            w for w in words
-            if alphabetize(w) == alphabetize(word)]
-        for word in words}
+    anagrams = {}
+    for each in word_file:
+        anagrams.setdefault(alphabetize(each), [])
+        if each not in anagrams[alphabetize(each)]:
+            anagrams[alphabetize(each)].append(each)
     return anagrams
 
 
@@ -40,8 +40,7 @@ def main(args):
     if len(args) < 1:
         print("Please specify a word file!")
         sys.exit(1)
-
-    with open(args[0]) as f:
+    with open(f"words/{args[0]}") as f:
         words = f.read().split()
     anagram_dict = find_anagrams(words)
     for k, v in anagram_dict.items():
